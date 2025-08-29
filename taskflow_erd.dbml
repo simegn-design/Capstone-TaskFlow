@@ -1,0 +1,72 @@
+// TaskFlow Database Schema
+// Generated for Capstone Project
+
+Table users {
+  id int [pk, increment]
+  username varchar(150) [not null, unique]
+  email varchar(254) [not null, unique]
+  password varchar(128) [not null]
+  profile_pic varchar(100) [null]
+  bio text [null]
+  date_joined datetime [not null]
+  last_login datetime [null]
+  
+  indexes {
+    email [unique]
+    username [unique]
+  }
+}
+
+Table teams {
+  id int [pk, increment]
+  name varchar(100) [not null]
+  description text [null]
+  created_by int
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table team_members {
+  id int [pk, increment]
+  user_id int
+  team_id int
+  role varchar(20) [default: 'member']
+  joined_at datetime [not null]
+  
+  indexes {
+    (user_id, team_id) [unique]
+  }
+}
+
+Table tasks {
+  id int [pk, increment]
+  title varchar(200) [not null]
+  description text [null]
+  status varchar(20) [default: 'todo']
+  priority varchar(20) [default: 'medium']
+  due_date datetime [null]
+  assigned_to int [null]
+  team_id int
+  created_by int
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table comments {
+  id int [pk, increment]
+  content text [not null]
+  task_id int
+  author_id int
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+// Relationships (ONLY DEFINE ONCE HERE)
+Ref: teams.created_by > users.id
+Ref: team_members.user_id > users.id
+Ref: team_members.team_id > teams.id
+Ref: tasks.assigned_to > users.id
+Ref: tasks.team_id > teams.id
+Ref: tasks.created_by > users.id
+Ref: comments.author_id > users.id
+Ref: comments.task_id > tasks.id
