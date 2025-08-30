@@ -12,5 +12,6 @@ All endpoints require JWT authentication except registration and login.
 {
   "username": "testuser",
   "email": "test@example.com",
-  "password": "testpass123"
+  "password": "testpass123",
+  "password2": "testpass123"
 }
